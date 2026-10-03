@@ -34,6 +34,7 @@ export default function ItemDetailPage({ itemId, setActivePage, setSelectedItem 
 
   // Modals
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [contactTargetItem, setContactTargetItem] = useState(null);
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [statusUpdating, setStatusUpdating] = useState(false);
 
@@ -63,6 +64,9 @@ export default function ItemDetailPage({ itemId, setActivePage, setSelectedItem 
   useEffect(() => {
     if (itemId) {
       fetchItemDetail();
+    } else {
+      setLoading(false);
+      setError('No item selected');
     }
   }, [itemId, token]);
 
@@ -315,11 +319,14 @@ export default function ItemDetailPage({ itemId, setActivePage, setSelectedItem 
             ) : (
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => setContactModalOpen(true)}
+                  onClick={() => {
+                    setContactTargetItem(item);
+                    setContactModalOpen(true);
+                  }}
                   className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition-all transform hover:-translate-y-0.5"
                 >
                   <MessageSquare className="w-4 h-4" />
-                  <span>Contact {isLost ? 'Finder' : 'Reporter'}</span>
+                  <span>Contact {isLost ? 'Reporter' : 'Finder'}</span>
                 </button>
                 <button
                   onClick={() => setFlagModalOpen(true)}
@@ -383,6 +390,7 @@ export default function ItemDetailPage({ itemId, setActivePage, setSelectedItem 
                   setActivePage('item-detail');
                 }}
                 onContact={(matched) => {
+                  setContactTargetItem(matched);
                   setContactModalOpen(true);
                 }}
               />
@@ -393,9 +401,12 @@ export default function ItemDetailPage({ itemId, setActivePage, setSelectedItem 
 
       {/* Modals */}
       <ContactModal
-        item={item}
+        item={contactTargetItem || item}
         isOpen={contactModalOpen}
-        onClose={() => setContactModalOpen(false)}
+        onClose={() => {
+          setContactModalOpen(false);
+          setContactTargetItem(null);
+        }}
         onMessageSent={() => {
           alert('Message sent! You can view the full conversation in your Messages inbox.');
         }}

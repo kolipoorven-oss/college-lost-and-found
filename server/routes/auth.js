@@ -29,11 +29,17 @@ router.post('/register', async (req, res) => {
     }
 
     const cleanEmail = email.toLowerCase().trim();
+    const cleanCollegeId = college_id.trim().toUpperCase();
 
-    // Check if email already registered
+    // Check if email or college_id already registered
     const existing = db.get('SELECT id FROM users WHERE email = ?', [cleanEmail]);
     if (existing) {
       return res.status(400).json({ error: 'An account with this college email already exists' });
+    }
+
+    const existingId = db.get('SELECT id FROM users WHERE college_id = ?', [cleanCollegeId]);
+    if (existingId) {
+      return res.status(400).json({ error: 'An account with this Student/Staff ID already exists' });
     }
 
     const salt = await bcrypt.genSalt(10);

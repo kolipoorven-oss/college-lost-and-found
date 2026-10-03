@@ -74,9 +74,31 @@ export default function MessagesPage({ setActivePage, setSelectedItem }) {
     }
   };
 
+  const activeConvRef = useRef(null);
+  activeConvRef.current = activeConv;
+
+  const refreshActiveThread = async () => {
+    if (!token || !activeConvRef.current) return;
+    try {
+      const conv = activeConvRef.current;
+      const res = await fetch(`/api/messages/thread/${conv.otherUser.id}/${conv.itemId || 0}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setThreadMessages(data.messages || []);
+      }
+    } catch (err) {
+      // silent poll error
+    }
+  };
+
   useEffect(() => {
     fetchConversations();
-    const interval = setInterval(fetchConversations, 5000);
+    const interval = setInterval(() => {
+      fetchConversations();
+      refreshActiveThread();
+    }, 4000);
     return () => clearInterval(interval);
   }, [token]);
 

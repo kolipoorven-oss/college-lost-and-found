@@ -229,18 +229,11 @@ router.get('/:id', optionalAuth, (req, res) => {
         breakdown: m.breakdown
       });
 
-      if (!existingMatch) {
-        db.run(
-          `INSERT INTO matches (lost_item_id, found_item_id, match_score, match_reason, status, created_at)
-           VALUES (?, ?, ?, ?, 'potential', ?)`,
-          [m.lostItemId, m.foundItemId, m.score, reasonsJson, new Date().toISOString()]
-        );
-      } else {
-        db.run(
-          `UPDATE matches SET match_score = ?, match_reason = ? WHERE id = ?`,
-          [m.score, reasonsJson, existingMatch.id]
-        );
-      }
+      db.run(
+        `INSERT OR REPLACE INTO matches (lost_item_id, found_item_id, match_score, match_reason, status, created_at)
+         VALUES (?, ?, ?, ?, 'potential', ?)`,
+        [m.lostItemId, m.foundItemId, m.score, reasonsJson, new Date().toISOString()]
+      );
     }
 
     // Format matches with safe reporter data
@@ -359,7 +352,7 @@ router.post('/', requireAuth, upload.single('image'), (req, res) => {
         breakdown: m.breakdown
       });
       db.run(
-        `INSERT INTO matches (lost_item_id, found_item_id, match_score, match_reason, status, created_at)
+        `INSERT OR REPLACE INTO matches (lost_item_id, found_item_id, match_score, match_reason, status, created_at)
          VALUES (?, ?, ?, ?, 'potential', ?)`,
         [m.lostItemId, m.foundItemId, m.score, reasonsJson, now]
       );
