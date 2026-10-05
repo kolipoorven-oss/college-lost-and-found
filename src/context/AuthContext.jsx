@@ -46,7 +46,13 @@ export function AuthProvider({ children }) {
       body: JSON.stringify({ identifier, password })
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      throw new Error('Unable to connect to authentication server. Please try again.');
+    }
+
     if (!res.ok) {
       throw new Error(data.error || 'Login failed');
     }
@@ -65,7 +71,13 @@ export function AuthProvider({ children }) {
       body: JSON.stringify(userData)
     });
 
-    const data = await res.json();
+    let data;
+    try {
+      data = await res.json();
+    } catch (e) {
+      throw new Error('Unable to connect to registration server. Please try again.');
+    }
+
     if (!res.ok) {
       throw new Error(data.error || 'Registration failed');
     }
