@@ -14,10 +14,11 @@ import {
   Search,
   CheckCircle2,
   ChevronDown,
-  Building2
+  Building2,
+  Radar
 } from 'lucide-react';
 
-export default function Navbar({ activePage, setActivePage }) {
+export default function Navbar({ activePage, setActivePage, onTriggerPreloader }) {
   const { user, unreadCount, logout, quickLogin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -57,7 +58,7 @@ export default function Navbar({ activePage, setActivePage }) {
                   SMART AI
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-slate-600 tracking-wider">
+              <p className="text-[10px] sm:text-[11px] font-medium text-slate-600 tracking-wider hidden min-[360px]:block">
                 COLLEGE LOST & FOUND PORTAL
               </p>
             </div>
@@ -156,6 +157,18 @@ export default function Navbar({ activePage, setActivePage }) {
                 + Report Found
               </button>
             </div>
+
+            {/* God-Mode Holographic Radar Scanner */}
+            {onTriggerPreloader && (
+              <button
+                onClick={onTriggerPreloader}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-950 text-cyan-400 border border-slate-800 hover:border-cyan-500/50 flex items-center gap-1.5 shadow-sm transition-all active:scale-95"
+                title="Launch Holographic Radar Scanner"
+              >
+                <Radar className="w-3.5 h-3.5 animate-spin [animation-duration:6s]" />
+                <span className="hidden xl:inline">RADAR</span>
+              </button>
+            )}
 
             {/* Quick Demo Switcher Dropdown */}
             <div className="relative">
@@ -340,6 +353,22 @@ export default function Navbar({ activePage, setActivePage }) {
           </div>
 
           <div className="space-y-1">
+            {onTriggerPreloader && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onTriggerPreloader();
+                }}
+                className="w-full text-left px-3 py-2 rounded-xl text-xs font-mono font-bold text-cyan-800 bg-cyan-50/80 hover:bg-cyan-100 flex items-center justify-between border border-cyan-200"
+              >
+                <div className="flex items-center gap-2">
+                  <Radar className="w-4 h-4 text-cyan-600 animate-spin [animation-duration:6s]" />
+                  <span>Launch Holographic Radar HUD</span>
+                </div>
+                <span className="text-[10px] bg-cyan-200 text-cyan-900 px-1.5 py-0.5 rounded font-bold">LIVE</span>
+              </button>
+            )}
+
             <button
               onClick={() => handleNav('browse')}
               className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"

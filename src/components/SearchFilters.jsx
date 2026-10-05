@@ -58,11 +58,11 @@ export default function SearchFilters({ filters, setFilters, onReset }) {
         </div>
 
         {/* Type Toggle: All / Lost / Found */}
-        <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 shrink-0">
+        <div className="grid grid-cols-3 sm:inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 shrink-0 text-center">
           <button
             type="button"
             onClick={() => updateFilter('type', 'all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all text-center ${
               filters.type === 'all'
                 ? 'bg-white text-slate-900 shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
@@ -73,24 +73,24 @@ export default function SearchFilters({ filters, setFilters, onReset }) {
           <button
             type="button"
             onClick={() => updateFilter('type', 'lost')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all text-center ${
               filters.type === 'lost'
                 ? 'bg-rose-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-rose-600'
             }`}
           >
-            Lost Reports
+            Lost
           </button>
           <button
             type="button"
             onClick={() => updateFilter('type', 'found')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-1.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all text-center ${
               filters.type === 'found'
                 ? 'bg-emerald-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-emerald-600'
             }`}
           >
-            Found Reports
+            Found
           </button>
         </div>
       </div>

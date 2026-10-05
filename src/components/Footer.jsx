@@ -1,7 +1,7 @@
 import React from 'react';
 import { Compass, Shield, MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
 
-export default function Footer({ setActivePage }) {
+export default function Footer({ setActivePage, onTriggerPreloader }) {
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -18,9 +18,21 @@ export default function Footer({ setActivePage }) {
             <p className="text-xs text-slate-300 leading-relaxed">
               Official smart lost & found recovery network for students, faculty, and campus staff. Powered by intelligent attribute & location matching.
             </p>
-            <div className="flex items-center gap-2 text-xs text-emerald-400 font-medium bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/50 w-fit">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Campus Recovery Network Active
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-xs text-emerald-400 font-medium bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/50 w-fit">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Campus Recovery Network Active
+              </div>
+
+              {onTriggerPreloader && (
+                <button
+                  onClick={onTriggerPreloader}
+                  className="flex items-center gap-2 text-xs text-cyan-400 font-mono font-bold bg-cyan-950/60 hover:bg-cyan-900/60 px-3 py-1.5 rounded-lg border border-cyan-800/60 transition-colors w-fit shadow-sm"
+                >
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                  <span>⚡ Holographic Radar Preloader</span>
+                </button>
+              )}
             </div>
           </div>
 
